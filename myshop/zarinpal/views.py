@@ -11,7 +11,7 @@ client = Client('https://sandbox.zarinpal.com/pg/services/WebGate/wsdl')
 amount = 1000  # Toman / Required
 description = "توضیحات مربوط به تراکنش را در این قسمت وارد کنید"  # Required
 mobile = '09123456789'  # Optional
-CallbackURL = 'http://localhost:8000/zarinpal/verify/' # Important: need to edit for realy server.
+CallbackURL = 'http://141.98.210.138/:8000/zarinpal/verify/' # Important: need to edit for realy server.
 
 def send_request(request):
     order_id = request.session.get('order_id')
