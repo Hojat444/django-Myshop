@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from zeep import Client
 from .config import MERCHANT
-from orders.tasks import order_created
+from orders.tasks import send_order_email
 
 client = Client('https://sandbox.zarinpal.com/pg/services/WebGate/wsdl')
 amount = 1000  # Toman / Required
@@ -32,7 +32,7 @@ def verify(request):
         if result.Status == 100:
             order.paid = True
             order.save()
-            order_created.delay(order.id)
+            send_order_email.delay(order.id)
             # return HttpResponse('Transaction success.\nRefID: ' + str(result.RefID))
             return render(request,"zarinpal/success.html",{"id":result.RefID})
         elif result.Status == 101:

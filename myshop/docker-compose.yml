@@ -1,0 +1,58 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: sh -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      - DJANGO_SETTINGS_MODULE=myshop.settings
+    networks:
+      - myapp-network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: myappdb
+      POSTGRES_USER: myappuser
+      POSTGRES_PASSWORD: myapppassword
+    networks:
+      - myapp-network
+
+  celery_worker:
+    build: .
+    command: celery -A myshop worker -l INFO --pool=solo
+    depends_on:
+      - db
+      - rabbitmq
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=myshop.settings
+    networks:
+      - myapp-network
+
+  flower:
+    build: .
+    command: celery -A myshop flower
+    ports:
+      - "5555:5555"
+    depends_on:
+      - rabbitmq
+    networks:
+      - myapp-network
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:

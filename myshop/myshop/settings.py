@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-8=x+fdq3c7ezoe(+ibgq#z$6%u74wan($qtq0h4c$6wze(gzjl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,8 +83,12 @@ WSGI_APPLICATION = 'myshop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'myappdb',          # Replace with your database name
+        'USER': 'myappuser',        # Replace with your database user
+        'PASSWORD': 'myapppassword',  # Replace with your database password
+        'HOST': 'db',               # This should match the name of your database service in Docker Compose
+        'PORT': '',                 # Leave empty to use the default PostgreSQL port (5432)
     }
 }
 
@@ -136,7 +140,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
 
 # Sending Email in console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 #Languages
 LANGUAGES = (
@@ -152,12 +156,12 @@ LOCALE_PATHS = (
 CART_SESSION_ID = 'cart'
 
 # Sending Email with GMAIL
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587  # For TLS
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'h.ansari2001@gmail.com'
-# EMAIL_HOST_PASSWORD = 'ceuezvulxtzmrupw'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # For TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'h.ansari2001@gmail.com'
+EMAIL_HOST_PASSWORD = 'ceuezvulxtzmrupw'
 
 # zarinpal
 MERCHANT = "00000000-0000-0000-0000-000000000000"
@@ -166,3 +170,6 @@ SANDBOX = True
 
 # statics
 STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+
+# Celery Configuration
+CELERY_BROKER_URL = 'pyamqp://guest:guest@rabbitmq:5672/'
