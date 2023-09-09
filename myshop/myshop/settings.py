@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'rosetta',
     'zarinpal',
+    'coupons',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -170,6 +172,11 @@ SANDBOX = True
 
 # statics
 STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+
+#redis config
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 1
 
 # Celery Configuration
 CELERY_BROKER_URL = 'pyamqp://guest:guest@rabbitmq:5672/'
