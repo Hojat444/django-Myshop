@@ -4,19 +4,8 @@ FROM python:3.8-slim
 # Set the working directory to /app
 WORKDIR /app
 
-# Install gcc
-RUN apt-get update && apt-get install -y gcc
-# Install necessary system libraries
-RUN apt-get update && apt-get install -y libglib2.0-0
-
-# Install necessary system libraries
-RUN apt-get update && apt-get install -y libpango1.0-0
-
-# Install necessary system libraries
-RUN apt-get update && apt-get install -y gettext
-
-# Install necessary system libraries
-RUN apt-get update && apt-get install -y libgtk-3-dev
+# Install gcc and other system libraries
+RUN apt-get update && apt-get install -y gcc libglib2.0-0 libpango1.0-0 gettext libgtk-3-dev
 
 # Copy the current directory contents into the container at /app
 COPY . /app
